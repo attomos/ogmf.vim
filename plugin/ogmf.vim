@@ -3,7 +3,7 @@ function ogmf#get_git_modifiled_files()
   " Modifiled/Added/Deleted/Untracked
   let l = map(copy(arr), 'substitute(v:val, "\\s\\?[M|A|D|\\?]\\+\\s", "", "")')
   " Renamed
-  let l2 = map(copy(l), 'substitute(v:val, "\\s\\?R.\\+\\s->\\s", "", "")')
+  let l2 = map(copy(l), 'substitute(v:val, "\\s\\?R.\\+->\\s", "", "")')
   return l2
 endfunction
 
