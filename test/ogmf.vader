@@ -1,12 +1,17 @@
 Before (Create new file):
+  !git mv -f README.md README.html
+  !cd test
   !touch new-file
+  !echo something >> LICENSE
 " After (Delete new-file):
-"   !rm new-file
+"   !git reset HEAD .
+"   !git checkout .
+"   !git clean -df
 " Do (Call OpenGitModifiedFiles command):
 "   :OpenGitModifiedFiles<CR>
 
 Execute (ogmf#get_git_modifiled_files):
-  AssertEqual ['new-file'], ogmf#get_git_modifiled_files()
+  AssertEqual ['LICENSE', 'README.html', 'new-file'], ogmf#get_git_modifiled_files()
 
 Execute (open git modified files):
   OpenGitModifiedFiles
