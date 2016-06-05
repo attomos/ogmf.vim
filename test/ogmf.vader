@@ -3,10 +3,10 @@ Before (Create new file):
   !cd test
   !touch new-file
   !echo something >> LICENSE
-" After (Delete new-file):
-"   !git reset HEAD .
-"   !git checkout .
-"   !git clean -df
+After (Delete new-file):
+  !git reset HEAD .
+  !git checkout .
+  !git clean -df
 " Do (Call OpenGitModifiedFiles command):
 "   :OpenGitModifiedFiles<CR>
 
