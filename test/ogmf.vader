@@ -24,3 +24,12 @@ Then (should have these files in buffers):
   AssertEqual 1, bufexists('LICENSE')
   AssertEqual 1, bufexists('README.html')
   AssertEqual 1, bufexists('new-file')
+
+Execute (open git modified files using OGMF command):
+  OGMF
+
+Then (should have these files in buffers):
+  Log bufexists('new-file')
+  AssertEqual 1, bufexists('LICENSE')
+  AssertEqual 1, bufexists('README.html')
+  AssertEqual 1, bufexists('new-file')
