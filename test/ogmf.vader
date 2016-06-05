@@ -3,6 +3,7 @@ Before (Create new file):
   execute ':silent !' . 'cd test'
   execute ':silent !' . 'touch new-file'
   execute ':silent !' . 'echo something >> LICENSE'
+
 After (Delete new-file):
   execute ':silent !' . 'git reset HEAD README.html'
   execute ':silent !' . 'rm README.html'
@@ -10,8 +11,6 @@ After (Delete new-file):
   execute ':silent !' . 'git checkout README.md'
   execute ':silent !' . 'git checkout LICENSE'
   execute ':silent !' . 'rm new-file'
-" Do (Call OpenGitModifiedFiles command):
-"   :OpenGitModifiedFiles<CR>
 
 Execute (ogmf#get_git_modifiled_files):
   let l = ogmf#get_git_modifiled_files()
@@ -19,19 +18,24 @@ Execute (ogmf#get_git_modifiled_files):
   AssertEqual ['LICENSE', 'README.html', 'new-file'], filtered
 
 Execute (open git modified files):
-  OpenGitModifiedFiles
-
-Then (should have these files in buffers):
-  Log bufexists('new-file')
-  AssertEqual 1, bufexists('LICENSE')
-  AssertEqual 1, bufexists('README.html')
-  AssertEqual 1, bufexists('new-file')
-
-Execute (open git modified files using OGMF command):
   OGMF
 
 Then (should have these files in buffers):
-  Log bufexists('new-file')
   AssertEqual 1, bufexists('LICENSE')
   AssertEqual 1, bufexists('README.html')
   AssertEqual 1, bufexists('new-file')
+
+
+Execute (open git modified files in tabs using OGMF!):
+  OGMF!
+
+Then (should have these files in tabs):
+  redir @z
+  execute ':silent tabs'
+  redir END
+  let tabs = split(getreg('z'), "\n")
+  let filtered = filter(copy(tabs), 'v:val !~# "Tab page"')
+  let clean_tabs = map(copy(filtered), 'substitute(v:val, ">\\?\\s\\+", "", "")')
+  AssertNotEqual -1, index(clean_tabs, 'LICENSE')
+  AssertNotEqual -1, index(clean_tabs, 'README.html')
+  AssertNotEqual -1, index(clean_tabs, 'new-file')

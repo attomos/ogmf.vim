@@ -7,11 +7,17 @@ function! ogmf#get_git_modifiled_files()
   return l2
 endfunction
 
-function! ogmf#open()
+function! ogmf#open(bang)
   let l = ogmf#get_git_modifiled_files()
-  execute 'argadd' join(l, ' ')
-  echo 'Opened git modified files.'
+  if !a:bang
+    execute 'argadd' join(l, ' ')
+    echo 'Opened git modified files.'
+  else
+    for f in l
+      execute 'tabe ' . f
+    endfor
+    echo 'Opened git modified files in tabs.'
+  endif
 endfunction
 
-command! OpenGitModifiedFiles call ogmf#open()
-command! OGMF call ogmf#open()
+command! -bang OGMF call ogmf#open(<bang>0)
