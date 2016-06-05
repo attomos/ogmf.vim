@@ -1,0 +1,16 @@
+Before (Create new file):
+  !touch new-file
+" After (Delete new-file):
+"   !rm new-file
+" Do (Call OpenGitModifiedFiles command):
+"   :OpenGitModifiedFiles<CR>
+
+Execute (ogmf#get_git_modifiled_files):
+  AssertEqual ['new-file'], ogmf#get_git_modifiled_files()
+
+Execute (open git modified files):
+  OpenGitModifiedFiles
+
+Then (should have these files in buffers):
+  Log bufexists('new-file')
+  AssertEqual 1, bufexists('new-file')
