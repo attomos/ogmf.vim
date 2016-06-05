@@ -1,12 +1,15 @@
 Before (Create new file):
-  !git mv -f README.md README.html
-  !cd test
-  !touch new-file
-  !echo something >> LICENSE
+  execute ':silent !' . 'git mv -f README.md README.html'
+  execute ':silent !' . 'cd test'
+  execute ':silent !' . 'touch new-file'
+  execute ':silent !' . 'echo something >> LICENSE'
 After (Delete new-file):
-  !git reset HEAD .
-  !git checkout .
-  !git clean -df
+  execute ':silent !' . 'git reset HEAD README.html'
+  execute ':silent !' . 'rm README.html'
+  execute ':silent !' . 'git reset HEAD README.md'
+  execute ':silent !' . 'git checkout README.md'
+  execute ':silent !' . 'git checkout LICENSE'
+  execute ':silent !' . 'rm new-file'
 " Do (Call OpenGitModifiedFiles command):
 "   :OpenGitModifiedFiles<CR>
 
@@ -18,4 +21,6 @@ Execute (open git modified files):
 
 Then (should have these files in buffers):
   Log bufexists('new-file')
+  AssertEqual 1, bufexists('LICENSE')
+  AssertEqual 1, bufexists('README.html')
   AssertEqual 1, bufexists('new-file')
